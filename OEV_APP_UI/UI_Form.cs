@@ -15,8 +15,6 @@ namespace OEV_APP_UI
     {
 
         APIInterface APIInterface = new APIInterface();
-        Formats formats = new Formats();
-        string Placeholder = "hh:mm";
 
         public UI_Form()
         {
@@ -24,26 +22,18 @@ namespace OEV_APP_UI
             InitializeColumns();
         }
 
-        private void InitializeColumns()
-        {
-            lstConnections.View = View.Details;
-            lstConnections.Columns.Add("Abfahrt", lstConnections.Size.Width / 4);
-            lstConnections.Columns.Add("Ankunft", lstConnections.Size.Width / 4);
-            lstConnections.Columns.Add("Dauer", lstConnections.Size.Width / 4);
-            lstConnections.Columns.Add("Gleis/Kante", lstConnections.Size.Width / 4);
-            lstTimeTable.View = View.Details;
-            lstTimeTable.Columns.Add("Nach", lstTimeTable.Size.Width /3);
-            lstTimeTable.Columns.Add("Abfahrt", lstTimeTable.Size.Width / 3);
-            lstTimeTable.Columns.Add("Gleis/Kante", lstTimeTable.Size.Width / 3);
-        }
+       
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
-            
-            GC.Collect();
         }
 
+
+        /// <summary>
+        /// Gets Suggestions for the Autocompletion
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GetSuggestions(object sender, EventArgs e)
         { 
             TextBox currtextBox = (TextBox)sender;
@@ -61,22 +51,37 @@ namespace OEV_APP_UI
 
         }
 
+        /// <summary>
+        /// Search for Connections between txtFrom and txtTo
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
+            DateTime datetime =Convert.ToDateTime(dtpDepOrArr.Text);
             if (txtFrom.Text == "" || txtTo.Text == "")
             {
                 MessageBox.Show("Bitte alle Von und Bis Station angeben.", "Eingabefehler");
             }
             else
             {
+                ListViewItem[] items;
                 try
                 {
-                    lstConnections.Items.AddRange(APIInterface.GetConnections(txtFrom.Text, txtTo.Text));
-                }catch(Exception ex)
+                    items = APIInterface.GetConnections(txtFrom.Text, txtTo.Text, dtpDepOrArr, dtpTimePicker);
+                }
+                catch(Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
+                    return;
+                }
+                if(items == null)
+                {
+                    MessageBox.Show("Es wurden keine Verbindungen zwischen diesen Stationen gefunden.");
+                    return;
                 }
 
+                lstConnections.Items.AddRange(items);
             }
 
         }
@@ -95,49 +100,51 @@ namespace OEV_APP_UI
 
 
 
-        private void txtTime_Leave(object sender, EventArgs e)
+
+
+
+
+        private void btnSearchStation_Click(object sender, EventArgs e)
         {
-            TextBox textBox = (TextBox)sender;
-            if (textBox.Text == "")
+            if(txtStation.Text == "")
             {
-                textBox.Text = Placeholder;
+                MessageBox.Show("Bitte geben sie eine Station ein");
             }
             else
             {
-                txtTime.Text = Format(textBox.Text);
+                ListViewItem[] items;
+                try
+                {
+                    items = APIInterface.GetStationBoard(txtStation.Text);
+                }
+                catch(Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    return;
+                }
+                lstTimeTable.Items.AddRange(items);
             }
+            
         }
 
-        private string Format(string ToFormat)
+
+        private void InitializeColumns()
         {
-            string[] split = ToFormat.Split(':');
-            if(split.Length == 2)
-            {
-                throw new NotImplementedException();
-            }
-            else 
-            {
-                string formatted = formats.FormatTime(ToFormat);
-                if (formatted == "x")
-                {
-                    MessageBox.Show("Bitte gebes Sie die Zeit in richtigem Format an!", "Eingabefehler");
-                    return Placeholder;
-                }
-                else
-                {
-                    return formatted;
-                }
-            }
-
-
-        }
-
-        private void txtTime_Enter(object sender, EventArgs e)
-        {
-            if(txtTime.Text == Placeholder)
-            {
-                txtTime.Text = "";
-            }
+            // 
+            // lstConections
+            //
+            lstConnections.View = View.Details;
+            lstConnections.Columns.Add("Abfahrt", lstConnections.Size.Width / 4);
+            lstConnections.Columns.Add("Ankunft", lstConnections.Size.Width / 4);
+            lstConnections.Columns.Add("Dauer", lstConnections.Size.Width / 4);
+            lstConnections.Columns.Add("Gleis/Kante", lstConnections.Size.Width / 4);
+            //
+            // lstTimeTable
+            //
+            lstTimeTable.View = View.Details;
+            lstTimeTable.Columns.Add("Nach", lstTimeTable.Size.Width / 3);
+            lstTimeTable.Columns.Add("Abfahrt", lstTimeTable.Size.Width / 3);
+            lstTimeTable.Columns.Add("Gleis/Kante", lstTimeTable.Size.Width / 3);
         }
     }
 }
