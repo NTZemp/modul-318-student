@@ -38,5 +38,8 @@ namespace SwissTransport
     {
         [JsonProperty("departure")]
         public DateTime Departure { get; set; }
+
+        [JsonProperty("Plattform")]
+        public string Plattform { get; set; }
     }
 }
