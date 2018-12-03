@@ -33,6 +33,8 @@ namespace OEV_APP_UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI_Form));
             this.tcControl = new System.Windows.Forms.TabControl();
             this.tpConnections = new System.Windows.Forms.TabPage();
+            this.txtTime = new System.Windows.Forms.TextBox();
+            this.dtpDepOrArr = new System.Windows.Forms.DateTimePicker();
             this.lstConnections = new System.Windows.Forms.ListView();
             this.btnSearch = new System.Windows.Forms.Button();
             this.txtFrom = new System.Windows.Forms.TextBox();
@@ -44,8 +46,6 @@ namespace OEV_APP_UI
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnSearchStation = new System.Windows.Forms.Button();
             this.lblStation = new System.Windows.Forms.Label();
-            this.dtpDepOrArr = new System.Windows.Forms.DateTimePicker();
-            this.txtTime = new System.Windows.Forms.TextBox();
             this.tcControl.SuspendLayout();
             this.tpConnections.SuspendLayout();
             this.tpTimeTable.SuspendLayout();
@@ -79,6 +79,26 @@ namespace OEV_APP_UI
             this.tpConnections.TabIndex = 0;
             this.tpConnections.Text = "Verbindungen";
             this.tpConnections.UseVisualStyleBackColor = true;
+            // 
+            // txtTime
+            // 
+            this.txtTime.Location = new System.Drawing.Point(111, 91);
+            this.txtTime.Name = "txtTime";
+            this.txtTime.Size = new System.Drawing.Size(64, 22);
+            this.txtTime.TabIndex = 15;
+            this.txtTime.Text = "hh:mm";
+            this.txtTime.Enter += new System.EventHandler(this.txtTime_Enter);
+            this.txtTime.Leave += new System.EventHandler(this.txtTime_Leave);
+            // 
+            // dtpDepOrArr
+            // 
+            this.dtpDepOrArr.Cursor = System.Windows.Forms.Cursors.Default;
+            this.dtpDepOrArr.CustomFormat = "MM/dd/yyyy";
+            this.dtpDepOrArr.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dtpDepOrArr.Location = new System.Drawing.Point(9, 91);
+            this.dtpDepOrArr.Name = "dtpDepOrArr";
+            this.dtpDepOrArr.Size = new System.Drawing.Size(96, 22);
+            this.dtpDepOrArr.TabIndex = 9;
             // 
             // lstConnections
             // 
@@ -188,25 +208,6 @@ namespace OEV_APP_UI
             this.lblStation.TabIndex = 0;
             this.lblStation.Text = "Station";
             this.lblStation.UseWaitCursor = true;
-            // 
-            // dtpDepOrArr
-            // 
-            this.dtpDepOrArr.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dtpDepOrArr.CustomFormat = "MM/dd/yyyy";
-            this.dtpDepOrArr.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDepOrArr.Location = new System.Drawing.Point(9, 91);
-            this.dtpDepOrArr.Name = "dtpDepOrArr";
-            this.dtpDepOrArr.Size = new System.Drawing.Size(96, 22);
-            this.dtpDepOrArr.TabIndex = 9;
-            // 
-            // txtTime
-            // 
-            this.txtTime.Location = new System.Drawing.Point(111, 91);
-            this.txtTime.Name = "txtTime";
-            this.txtTime.Size = new System.Drawing.Size(64, 22);
-            this.txtTime.TabIndex = 15;
-            this.txtTime.Text = "hh:mm";
-            this.txtTime.DragEnter += new System.Windows.Forms.DragEventHandler(this.textBox1_DragEnter);
             // 
             // UI_Form
             // 
