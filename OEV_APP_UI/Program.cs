@@ -16,7 +16,7 @@ namespace OEV_APP_UI
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Application.Run(new UI_Form());
         }
     }
 }
