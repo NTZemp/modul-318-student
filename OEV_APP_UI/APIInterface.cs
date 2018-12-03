@@ -42,13 +42,27 @@ namespace OEV_APP_UI
             return resColl;
         }
 
+        public ListViewItem[] GetStationBoard(string Station)
+        {
+            string id = transportAPI.GetStations(Station).StationList[1].Id;
+            List<ListViewItem> results = new List<ListViewItem>();
+            StationBoardRoot stationBoard = transportAPI.GetStationBoard(Station, id);
+            foreach (StationBoard e in stationBoard.Entries)
+            {
+                string[] items = { e.To, e.Stop.Departure.ToString("hh:mm"), e.Stop.Plattform };
+                results.Add(new ListViewItem(items));
+            }
+            return results.ToArray();
+        }
+
+
         public ListViewItem[] GetConnections(string From, string To)
         {
             List<ListViewItem> results = new List<ListViewItem>();
             Connections currConns = transportAPI.GetConnections(From, To);
             foreach(Connection c in currConns.ConnectionList)
             {
-                string[] items = { c.From.Departure, c.To.Arrival, c.Duration, c.From.Platform };
+                string[] items = { c.From.DateTimeDeparture.ToString("hh:mm"), c.To.DateTimeArrival.ToString("hh:mm"), c.DateTimeDuration.ToString("hh:mm"), c.From.Platform };
                 results.Add(new ListViewItem(items));
             }
 

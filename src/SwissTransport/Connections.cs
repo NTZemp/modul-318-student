@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using System;
 
 namespace SwissTransport
 {
@@ -19,6 +20,13 @@ namespace SwissTransport
 
         [JsonProperty("duration")]
         public string Duration { get; set; }
+        public DateTime DateTimeDuration { get; set; }
+
+        public void ConverDur()
+        {
+            string[] durstring = Duration.Split('d');
+            DateTimeDuration = Convert.ToDateTime(durstring[1]);
+        }
     }
 
     public class ConnectionPoint
@@ -28,9 +36,13 @@ namespace SwissTransport
 
         public string Arrival { get; set; }
 
+        public DateTime DateTimeArrival { get; set; }
+
         public string ArrivalTimestamp { get; set; }
 
         public string Departure { get; set; }
+
+        public DateTime DateTimeDeparture { get; set; }
 
         public string DepartureTimestamp { get; set; }
 
@@ -39,5 +51,12 @@ namespace SwissTransport
         public string Platform { get; set; }
 
         public string RealtimeAvailability { get; set; }
+
+
+        public void ConvertToArrDep()
+        {
+            DateTimeArrival = Convert.ToDateTime(Arrival);
+            DateTimeDeparture = Convert.ToDateTime(Departure);
+        }
     }
 }
