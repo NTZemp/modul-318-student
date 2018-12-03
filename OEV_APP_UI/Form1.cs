@@ -28,10 +28,11 @@ namespace OEV_APP_UI
             txtFrom.AutoCompleteSource = AutoCompleteSource.CustomSource;
             txtTo.AutoCompleteMode = AutoCompleteMode.Suggest;
             txtTo.AutoCompleteSource = AutoCompleteSource.CustomSource;
-            lstTimeTable.Columns.Add("Abfahrt");
-            lstTimeTable.Columns.Add("Ankunft");
-            lstTimeTable.Columns.Add("Dauer");
-            lstTimeTable.Columns.Add("Abfahrts Gleis");
+            lstTimeTable.View = View.Details;
+            lstTimeTable.Columns.Add("Abfahrt", lstTimeTable.Size.Width / 4);
+            lstTimeTable.Columns.Add("Ankunft", lstTimeTable.Size.Width / 4);
+            lstTimeTable.Columns.Add("Dauer", lstTimeTable.Size.Width / 4);
+            lstTimeTable.Columns.Add("Abfahrts Gleis", lstTimeTable.Size.Width / 4);
             GC.Collect();
         }
 
@@ -47,7 +48,8 @@ namespace OEV_APP_UI
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            APIInterface.GetConnections(txtFrom.Text, txtTo.Text,ref lstTimeTable);
+            
+            lstTimeTable.Items.AddRange(APIInterface.GetConnections(txtFrom.Text, txtTo.Text);)
         }
 
 
