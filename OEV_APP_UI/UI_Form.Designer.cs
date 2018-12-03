@@ -30,10 +30,10 @@ namespace OEV_APP_UI
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.DateTimePicker dtpTimePicker;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI_Form));
             this.tcControl = new System.Windows.Forms.TabControl();
             this.tpConnections = new System.Windows.Forms.TabPage();
-            this.txtTime = new System.Windows.Forms.TextBox();
             this.dtpDepOrArr = new System.Windows.Forms.DateTimePicker();
             this.lstConnections = new System.Windows.Forms.ListView();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -46,10 +46,24 @@ namespace OEV_APP_UI
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnSearchStation = new System.Windows.Forms.Button();
             this.lblStation = new System.Windows.Forms.Label();
+            dtpTimePicker = new System.Windows.Forms.DateTimePicker();
             this.tcControl.SuspendLayout();
             this.tpConnections.SuspendLayout();
             this.tpTimeTable.SuspendLayout();
             this.SuspendLayout();
+            // 
+            // dtpTimePicker
+            // 
+            dtpTimePicker.Cursor = System.Windows.Forms.Cursors.Default;
+            dtpTimePicker.CustomFormat = "hh:mm";
+            dtpTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            dtpTimePicker.ImeMode = System.Windows.Forms.ImeMode.On;
+            dtpTimePicker.Location = new System.Drawing.Point(111, 91);
+            dtpTimePicker.Name = "dtpTimePicker";
+            dtpTimePicker.ShowUpDown = true;
+            dtpTimePicker.Size = new System.Drawing.Size(96, 22);
+            dtpTimePicker.TabIndex = 15;
+            dtpTimePicker.Value = new System.DateTime(2018, 12, 3, 14, 42, 0, 0);
             // 
             // tcControl
             // 
@@ -64,7 +78,7 @@ namespace OEV_APP_UI
             // 
             // tpConnections
             // 
-            this.tpConnections.Controls.Add(this.txtTime);
+            this.tpConnections.Controls.Add(dtpTimePicker);
             this.tpConnections.Controls.Add(this.dtpDepOrArr);
             this.tpConnections.Controls.Add(this.lstConnections);
             this.tpConnections.Controls.Add(this.btnSearch);
@@ -79,16 +93,6 @@ namespace OEV_APP_UI
             this.tpConnections.TabIndex = 0;
             this.tpConnections.Text = "Verbindungen";
             this.tpConnections.UseVisualStyleBackColor = true;
-            // 
-            // txtTime
-            // 
-            this.txtTime.Location = new System.Drawing.Point(111, 91);
-            this.txtTime.Name = "txtTime";
-            this.txtTime.Size = new System.Drawing.Size(64, 22);
-            this.txtTime.TabIndex = 15;
-            this.txtTime.Text = "hh:mm";
-            this.txtTime.Enter += new System.EventHandler(this.txtTime_Enter);
-            this.txtTime.Leave += new System.EventHandler(this.txtTime_Leave);
             // 
             // dtpDepOrArr
             // 
@@ -184,6 +188,8 @@ namespace OEV_APP_UI
             // 
             // txtStation
             // 
+            this.txtStation.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.txtStation.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txtStation.Location = new System.Drawing.Point(6, 36);
             this.txtStation.Name = "txtStation";
             this.txtStation.Size = new System.Drawing.Size(301, 22);
@@ -198,6 +204,7 @@ namespace OEV_APP_UI
             this.btnSearchStation.TabIndex = 1;
             this.btnSearchStation.Text = "Suchen";
             this.btnSearchStation.UseVisualStyleBackColor = true;
+            this.btnSearchStation.Click += new System.EventHandler(this.btnSearchStation_Click);
             // 
             // lblStation
             // 
@@ -246,7 +253,6 @@ namespace OEV_APP_UI
         private Label lblStation;
         private ListView lstTimeTable;
         private DateTimePicker dtpDepOrArr;
-        private TextBox txtTime;
     }
 }
 
