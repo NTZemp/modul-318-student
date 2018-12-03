@@ -42,9 +42,17 @@ namespace OEV_APP_UI
             return resColl;
         }
 
-        public ListView.ListViewItemCollection GetConnections(string From, string To, ref ListView listView)
+        public ListViewItem[] GetConnections(string From, string To)
         {
-           
-        }
+            List<ListViewItem> results = new List<ListViewItem>();
+            Connections currConns = transportAPI.GetConnections(From, To);
+            foreach(Connection c in currConns.ConnectionList)
+            {
+                string[] items = { c.From.Departure, c.To.Arrival, c.Duration, c.From.Platform };
+                results.Add(new ListViewItem(items));
+            }
+
+            return results.ToArray();
+        }   
     }
 }
