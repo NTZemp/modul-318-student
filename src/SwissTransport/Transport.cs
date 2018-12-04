@@ -48,37 +48,21 @@ namespace SwissTransport
                 var readToEnd = new StreamReader(responseStream).ReadToEnd();
                 var stationboard =
                     JsonConvert.DeserializeObject<StationBoardRoot>(readToEnd);
-                return stationboard;
-            }
-            return null;
-                
-        }
-
-        public Connections GetConnections(string fromStation, string toStation)
-        {
-            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStation);
-            var response = request.GetResponse();
-            var responseStream = response.GetResponseStream();
-            if (responseStream != null)
-            {
-                var readToEnd = new StreamReader(responseStream).ReadToEnd();
-                var connections =
-                    JsonConvert.DeserializeObject<Connections>(readToEnd);
-                Convert(ref connections);
-                if(connections.ConnectionList.Count != 0)
+                if(stationboard.Entries.Count != 0)
                 {
-                    return connections;
-
+                    return stationboard;
                 }
             }
-            throw new NoConnectionException($"Es wurde keine Verbindung zwischen {fromStation} und {toStation} gefunden");
+            throw new NoStationBoardException($"Es konnte keine Abfahrtstafel für {station} gefunden werden");
         }
 
 
-        public Connections GetConnections(string fromStation, string toStation, DateTime time)
+
+
+        public Connections GetConnections(string fromStation, string toStation, DateTime time, string AbOrAn)
         {
             string requestString = $"http://transport.opendata.ch/v1/connections?from="+fromStation+"&to=" + toStation;
-            var request = CreateWebRequest(requestString+"&time=" + time.ToString("hh:mm")+ "&date=" + time.Date.ToString("yyyy-MM-dd"));
+            var request = CreateWebRequest(requestString+"&time=" + time.ToString("HH:mm")+ "&date=" + time.Date.ToString("yyyy-MM-dd") + "&isArrivalTime=" + AbOrAn);
             var response = request.GetResponse();
             var responseStream = response.GetResponseStream();
             if (responseStream != null)

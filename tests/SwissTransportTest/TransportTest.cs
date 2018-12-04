@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using System;
 namespace SwissTransport
 {
     [TestClass]
@@ -28,8 +28,9 @@ namespace SwissTransport
         [TestMethod]
         public void Connections()
         {
+            DateTime dateTime = DateTime.Now;
             testee = new Transport();
-            var connections = testee.GetConnections("Sursee", "Luzern");
+            var connections = testee.GetConnections("Sursee", "Luzern", dateTime, "0");
 
             Assert.IsNotNull(connections);
         }
