@@ -2,7 +2,6 @@
 using System.IO;
 using System.Net;
 using Newtonsoft.Json;
-
 namespace SwissTransport
 {
     public class Transport : ITransport
@@ -24,10 +23,12 @@ namespace SwissTransport
                 var message = new StreamReader(responseStream).ReadToEnd();
                 var stations = JsonConvert.DeserializeObject<Stations>(message
                     , new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore });
-                return stations;
+                if(stations.StationList.Count != 0)
+                {
+                    return stations;
+                }
             }
-
-            return null;
+            throw new StationNotFoundException($"Die Station {query} konnte nicht gefunden werden.");
         }
 
         /// <summary>
@@ -49,28 +50,28 @@ namespace SwissTransport
                     JsonConvert.DeserializeObject<StationBoardRoot>(readToEnd);
                 return stationboard;
             }
-
             return null;
+                
         }
 
-        public Connections GetConnections(string fromStation, string toStattion)
+        public Connections GetConnections(string fromStation, string toStation)
         {
-                var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStattion);
-                var response = request.GetResponse();
-                var responseStream = response.GetResponseStream();
-
-
-
-                if (responseStream != null)
+            var request = CreateWebRequest("http://transport.opendata.ch/v1/connections?from=" + fromStation + "&to=" + toStation);
+            var response = request.GetResponse();
+            var responseStream = response.GetResponseStream();
+            if (responseStream != null)
+            {
+                var readToEnd = new StreamReader(responseStream).ReadToEnd();
+                var connections =
+                    JsonConvert.DeserializeObject<Connections>(readToEnd);
+                Convert(ref connections);
+                if(connections.ConnectionList.Count != 0)
                 {
-                    var readToEnd = new StreamReader(responseStream).ReadToEnd();
-                    var connections =
-                        JsonConvert.DeserializeObject<Connections>(readToEnd);
-                    Convert(ref connections);
                     return connections;
-                }
 
-            return null;
+                }
+            }
+            throw new NoConnectionException($"Es wurde keine Verbindung zwischen {fromStation} und {toStation} gefunden");
         }
 
 
@@ -86,10 +87,13 @@ namespace SwissTransport
                 var connections =
                     JsonConvert.DeserializeObject<Connections>(readToEnd);
                 Convert(ref connections);
-                return connections;
-            }
+                if (connections.ConnectionList.Count != 0)
+                {
+                    return connections;
 
-            return null;
+                }
+            }
+            throw new NoConnectionException($"Es wurde keine Verbindung zwischen {fromStation} und {toStation} gefunden");
         }
 
         public void Convert( ref Connections connections)
