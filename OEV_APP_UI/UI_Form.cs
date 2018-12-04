@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using SwissTransport;
 using System.Windows.Forms;
 
@@ -29,6 +22,8 @@ namespace OEV_APP_UI
         {
             dtpDepOrArr.Text = DateTime.Now.ToLongDateString();
             dtpTimePicker.Text = DateTime.Now.ToShortTimeString();
+            txtFrom.AutoCompleteCustomSource = SuggestionSource;
+            txtFrom.AutoCompleteMode = AutoCompleteMode.Suggest;
         }
 
 
@@ -46,13 +41,22 @@ namespace OEV_APP_UI
                 {
                     GC.Collect();
                     SuggestionSource = APIInterface.GetSuggestions(currtextBox.Text);
+
                     currtextBox.AutoCompleteCustomSource = SuggestionSource;
                     currtextBox.AutoCompleteMode = AutoCompleteMode.Suggest;
+                    //currtextBox.AutoCompleteMode = AutoCompleteMode.SuggestAppend;
                 }
-            }catch(Exception ex)
+
+            }catch(StationNotFoundException)
             {
-                MessageBox.Show(ex.ToString());
+                SuggestionSource.Clear();
+                return;
             }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
 
         }
 
@@ -74,22 +78,24 @@ namespace OEV_APP_UI
             }
             else
             {
-                ListViewItem[] items;
+                ListViewItem[] items = { new ListViewItem("0") }; 
                 try
                 {
                     items = APIInterface.GetConnections(txtFrom.Text, txtTo.Text, dateTime);
+                }
+                catch (NoConnectionException ncex)
+                {
+                    MessageBox.Show(ncex.Message, "Error");
+                    txtFrom.Text = "";
+                    txtTo.Text = "";
+                    txtStation.Text = "";
+                    return;
                 }
                 catch(Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                     return;
                 }
-                if(items == null)
-                {
-                    MessageBox.Show("Es wurden keine Verbindungen zwischen diesen Stationen gefunden.");
-                    return;
-                }
-
                 lstConnections.Items.AddRange(items);
             }
 
@@ -159,6 +165,18 @@ namespace OEV_APP_UI
             lstTimeTable.Columns.Add("Nach", lstTimeTable.Size.Width / 3);
             lstTimeTable.Columns.Add("Abfahrt", lstTimeTable.Size.Width / 3);
             lstTimeTable.Columns.Add("Gleis/Kante", lstTimeTable.Size.Width / 3);
+        }
+
+        private void GetStationLocation(object sender, EventArgs e)
+        {
+            try
+            {
+                string location = APIInterface.GetStationLocation(txtStation.Text);
+                System.Diagnostics.Process.Start("https://google.com/maps/place/" + location);
+            }catch(StationNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+            }
         }
     }
 }
