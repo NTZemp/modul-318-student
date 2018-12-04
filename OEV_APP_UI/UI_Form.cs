@@ -65,13 +65,12 @@ namespace OEV_APP_UI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void btnSearch_Click(object sender, EventArgs e)
+        private void SearchConnection(object sender, EventArgs e)
         {
-            lstConnections.Items.Clear();
             DateTime time = Convert.ToDateTime(dtpTimePicker.Text);
             DateTime date =Convert.ToDateTime(dtpDepOrArr.Text);
             DateTime dateTime = date.Date.Add(time.TimeOfDay);
-            
+            bool AbOrAN = rdbAn.Checked;
             if (txtFrom.Text == "" || txtTo.Text == "")
             {
                 MessageBox.Show("Bitte alle Von und Bis Station angeben.", "Eingabefehler");
@@ -81,7 +80,8 @@ namespace OEV_APP_UI
                 ListViewItem[] items = { new ListViewItem("0") }; 
                 try
                 {
-                    items = APIInterface.GetConnections(txtFrom.Text, txtTo.Text, dateTime);
+                    lstConnections.Items.Clear();
+                    items = APIInterface.GetConnections(txtFrom.Text, txtTo.Text, dateTime, AbOrAN);
                 }
                 catch (NoConnectionException ncex)
                 {
@@ -112,7 +112,12 @@ namespace OEV_APP_UI
                 ListViewItem[] items;
                 try
                 {
+                    lstTimeTable.Items.Clear();
                     items = APIInterface.GetStationBoard(txtStation.Text);
+                }catch(NoStationBoardException ex)
+                {
+                    MessageBox.Show(ex.Message, "Error");
+                    return;
                 }
                 catch (Exception ex)
                 {
@@ -154,10 +159,10 @@ namespace OEV_APP_UI
             // lstConections
             //
             lstConnections.View = View.Details;
-            lstConnections.Columns.Add("Abfahrt", lstConnections.Size.Width / 4);
-            lstConnections.Columns.Add("Ankunft", lstConnections.Size.Width / 4);
-            lstConnections.Columns.Add("Dauer", lstConnections.Size.Width / 4);
-            lstConnections.Columns.Add("Gleis/Kante", lstConnections.Size.Width / 4);
+            lstConnections.Columns.Add("Abfahrt", lstConnections.Size.Width / 5);
+            lstConnections.Columns.Add("Ankunft", lstConnections.Size.Width / 5);
+            lstConnections.Columns.Add("Dauer", lstConnections.Size.Width / 5);
+            lstConnections.Columns.Add("Gleis/Kante", lstConnections.Size.Width / 5);
             //
             // lstTimeTable
             //
@@ -173,9 +178,15 @@ namespace OEV_APP_UI
             {
                 string location = APIInterface.GetStationLocation(txtStation.Text);
                 System.Diagnostics.Process.Start("https://google.com/maps/place/" + location);
-            }catch(StationNotFoundException ex)
+            }catch(NoLocationDataException ex)
             {
                 MessageBox.Show(ex.Message, "Error");
+                return;
+            }
+            catch (StationNotFoundException ex)
+            {
+                MessageBox.Show(ex.Message, "Error");
+                return;
             }
         }
     }

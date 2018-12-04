@@ -33,6 +33,8 @@ namespace OEV_APP_UI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI_Form));
             this.tcControl = new System.Windows.Forms.TabControl();
             this.tpConnections = new System.Windows.Forms.TabPage();
+            this.rdbAn = new System.Windows.Forms.RadioButton();
+            this.rdbAb = new System.Windows.Forms.RadioButton();
             this.dtpTimePicker = new System.Windows.Forms.DateTimePicker();
             this.dtpDepOrArr = new System.Windows.Forms.DateTimePicker();
             this.lstConnections = new System.Windows.Forms.ListView();
@@ -42,11 +44,11 @@ namespace OEV_APP_UI
             this.lblFrom = new System.Windows.Forms.Label();
             this.lblTo = new System.Windows.Forms.Label();
             this.tpTimeTable = new System.Windows.Forms.TabPage();
+            this.btn_StationLocation = new System.Windows.Forms.Button();
             this.lstTimeTable = new System.Windows.Forms.ListView();
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnSearchStation = new System.Windows.Forms.Button();
             this.lblStation = new System.Windows.Forms.Label();
-            this.btn_StationLocation = new System.Windows.Forms.Button();
             this.tcControl.SuspendLayout();
             this.tpConnections.SuspendLayout();
             this.tpTimeTable.SuspendLayout();
@@ -65,6 +67,8 @@ namespace OEV_APP_UI
             // 
             // tpConnections
             // 
+            this.tpConnections.Controls.Add(this.rdbAn);
+            this.tpConnections.Controls.Add(this.rdbAb);
             this.tpConnections.Controls.Add(this.dtpTimePicker);
             this.tpConnections.Controls.Add(this.dtpDepOrArr);
             this.tpConnections.Controls.Add(this.lstConnections);
@@ -81,9 +85,31 @@ namespace OEV_APP_UI
             this.tpConnections.Text = "Verbindungen";
             this.tpConnections.UseVisualStyleBackColor = true;
             // 
+            // rdbAn
+            // 
+            this.rdbAn.AutoSize = true;
+            this.rdbAn.Location = new System.Drawing.Point(289, 92);
+            this.rdbAn.Name = "rdbAn";
+            this.rdbAn.Size = new System.Drawing.Size(46, 21);
+            this.rdbAn.TabIndex = 17;
+            this.rdbAn.Text = "An";
+            this.rdbAn.UseVisualStyleBackColor = true;
+            // 
+            // rdbAb
+            // 
+            this.rdbAb.AutoSize = true;
+            this.rdbAb.Checked = true;
+            this.rdbAb.Location = new System.Drawing.Point(237, 92);
+            this.rdbAb.Name = "rdbAb";
+            this.rdbAb.Size = new System.Drawing.Size(46, 21);
+            this.rdbAb.TabIndex = 16;
+            this.rdbAb.TabStop = true;
+            this.rdbAb.Text = "Ab";
+            this.rdbAb.UseVisualStyleBackColor = true;
+            // 
             // dtpTimePicker
             // 
-            this.dtpTimePicker.CustomFormat = "hh:mm";
+            this.dtpTimePicker.CustomFormat = "HH:mm";
             this.dtpTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.dtpTimePicker.Location = new System.Drawing.Point(133, 91);
             this.dtpTimePicker.Name = "dtpTimePicker";
@@ -117,7 +143,7 @@ namespace OEV_APP_UI
             this.btnSearch.TabIndex = 13;
             this.btnSearch.Text = "Suchen";
             this.btnSearch.UseVisualStyleBackColor = true;
-            this.btnSearch.Click += new System.EventHandler(this.btnSearch_Click);
+            this.btnSearch.Click += new System.EventHandler(this.SearchConnection);
             // 
             // txtFrom
             // 
@@ -175,10 +201,21 @@ namespace OEV_APP_UI
             this.tpTimeTable.Text = "Abfahrtstafel";
             this.tpTimeTable.UseVisualStyleBackColor = true;
             // 
+            // btn_StationLocation
+            // 
+            this.btn_StationLocation.BackgroundImage = global::OEV_APP_UI.Properties.Resources.Google_Maps;
+            this.btn_StationLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_StationLocation.Location = new System.Drawing.Point(313, 9);
+            this.btn_StationLocation.Name = "btn_StationLocation";
+            this.btn_StationLocation.Size = new System.Drawing.Size(71, 55);
+            this.btn_StationLocation.TabIndex = 12;
+            this.btn_StationLocation.UseVisualStyleBackColor = true;
+            this.btn_StationLocation.Click += new System.EventHandler(this.GetStationLocation);
+            // 
             // lstTimeTable
             // 
-            this.lstTimeTable.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.lstTimeTable.Location = new System.Drawing.Point(6, 119);
+            this.lstTimeTable.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.lstTimeTable.Location = new System.Drawing.Point(9, 119);
             this.lstTimeTable.Name = "lstTimeTable";
             this.lstTimeTable.Size = new System.Drawing.Size(867, 455);
             this.lstTimeTable.TabIndex = 11;
@@ -213,17 +250,6 @@ namespace OEV_APP_UI
             this.lblStation.TabIndex = 0;
             this.lblStation.Text = "Station";
             this.lblStation.UseWaitCursor = true;
-            // 
-            // btn_StationLocation
-            // 
-            this.btn_StationLocation.BackgroundImage = global::OEV_APP_UI.Properties.Resources.Google_Maps;
-            this.btn_StationLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.btn_StationLocation.Location = new System.Drawing.Point(313, 9);
-            this.btn_StationLocation.Name = "btn_StationLocation";
-            this.btn_StationLocation.Size = new System.Drawing.Size(71, 49);
-            this.btn_StationLocation.TabIndex = 12;
-            this.btn_StationLocation.UseVisualStyleBackColor = true;
-            this.btn_StationLocation.Click += new System.EventHandler(this.GetStationLocation);
             // 
             // UI_Form
             // 
@@ -264,6 +290,8 @@ namespace OEV_APP_UI
         private DateTimePicker dtpDepOrArr;
         private DateTimePicker dtpTimePicker;
         private Button btn_StationLocation;
+        private RadioButton rdbAn;
+        private RadioButton rdbAb;
     }
 }
 
