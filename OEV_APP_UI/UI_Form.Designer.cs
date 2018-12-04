@@ -46,6 +46,7 @@ namespace OEV_APP_UI
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnSearchStation = new System.Windows.Forms.Button();
             this.lblStation = new System.Windows.Forms.Label();
+            this.btn_StationLocation = new System.Windows.Forms.Button();
             this.tcControl.SuspendLayout();
             this.tpConnections.SuspendLayout();
             this.tpTimeTable.SuspendLayout();
@@ -161,6 +162,7 @@ namespace OEV_APP_UI
             // 
             // tpTimeTable
             // 
+            this.tpTimeTable.Controls.Add(this.btn_StationLocation);
             this.tpTimeTable.Controls.Add(this.lstTimeTable);
             this.tpTimeTable.Controls.Add(this.txtStation);
             this.tpTimeTable.Controls.Add(this.btnSearchStation);
@@ -194,9 +196,9 @@ namespace OEV_APP_UI
             // 
             // btnSearchStation
             // 
-            this.btnSearchStation.Location = new System.Drawing.Point(747, 6);
+            this.btnSearchStation.Location = new System.Drawing.Point(747, 9);
             this.btnSearchStation.Name = "btnSearchStation";
-            this.btnSearchStation.Size = new System.Drawing.Size(129, 52);
+            this.btnSearchStation.Size = new System.Drawing.Size(129, 49);
             this.btnSearchStation.TabIndex = 1;
             this.btnSearchStation.Text = "Suchen";
             this.btnSearchStation.UseVisualStyleBackColor = true;
@@ -205,12 +207,23 @@ namespace OEV_APP_UI
             // lblStation
             // 
             this.lblStation.AutoSize = true;
-            this.lblStation.Location = new System.Drawing.Point(3, 16);
+            this.lblStation.Location = new System.Drawing.Point(3, 9);
             this.lblStation.Name = "lblStation";
             this.lblStation.Size = new System.Drawing.Size(52, 17);
             this.lblStation.TabIndex = 0;
             this.lblStation.Text = "Station";
             this.lblStation.UseWaitCursor = true;
+            // 
+            // btn_StationLocation
+            // 
+            this.btn_StationLocation.BackgroundImage = global::OEV_APP_UI.Properties.Resources.Google_Maps;
+            this.btn_StationLocation.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.btn_StationLocation.Location = new System.Drawing.Point(313, 9);
+            this.btn_StationLocation.Name = "btn_StationLocation";
+            this.btn_StationLocation.Size = new System.Drawing.Size(71, 49);
+            this.btn_StationLocation.TabIndex = 12;
+            this.btn_StationLocation.UseVisualStyleBackColor = true;
+            this.btn_StationLocation.Click += new System.EventHandler(this.GetStationLocation);
             // 
             // UI_Form
             // 
@@ -250,6 +263,7 @@ namespace OEV_APP_UI
         private ListView lstTimeTable;
         private DateTimePicker dtpDepOrArr;
         private DateTimePicker dtpTimePicker;
+        private Button btn_StationLocation;
     }
 }
 
