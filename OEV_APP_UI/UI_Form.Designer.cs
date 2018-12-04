@@ -30,10 +30,10 @@ namespace OEV_APP_UI
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DateTimePicker dtpTimePicker;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(UI_Form));
             this.tcControl = new System.Windows.Forms.TabControl();
             this.tpConnections = new System.Windows.Forms.TabPage();
+            this.dtpTimePicker = new System.Windows.Forms.DateTimePicker();
             this.dtpDepOrArr = new System.Windows.Forms.DateTimePicker();
             this.lstConnections = new System.Windows.Forms.ListView();
             this.btnSearch = new System.Windows.Forms.Button();
@@ -46,24 +46,10 @@ namespace OEV_APP_UI
             this.txtStation = new System.Windows.Forms.TextBox();
             this.btnSearchStation = new System.Windows.Forms.Button();
             this.lblStation = new System.Windows.Forms.Label();
-            dtpTimePicker = new System.Windows.Forms.DateTimePicker();
             this.tcControl.SuspendLayout();
             this.tpConnections.SuspendLayout();
             this.tpTimeTable.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // dtpTimePicker
-            // 
-            dtpTimePicker.Cursor = System.Windows.Forms.Cursors.Default;
-            dtpTimePicker.CustomFormat = "hh:mm";
-            dtpTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            dtpTimePicker.ImeMode = System.Windows.Forms.ImeMode.On;
-            dtpTimePicker.Location = new System.Drawing.Point(111, 91);
-            dtpTimePicker.Name = "dtpTimePicker";
-            dtpTimePicker.ShowUpDown = true;
-            dtpTimePicker.Size = new System.Drawing.Size(96, 22);
-            dtpTimePicker.TabIndex = 15;
-            dtpTimePicker.Value = new System.DateTime(2018, 12, 3, 14, 42, 0, 0);
             // 
             // tcControl
             // 
@@ -78,7 +64,7 @@ namespace OEV_APP_UI
             // 
             // tpConnections
             // 
-            this.tpConnections.Controls.Add(dtpTimePicker);
+            this.tpConnections.Controls.Add(this.dtpTimePicker);
             this.tpConnections.Controls.Add(this.dtpDepOrArr);
             this.tpConnections.Controls.Add(this.lstConnections);
             this.tpConnections.Controls.Add(this.btnSearch);
@@ -94,14 +80,24 @@ namespace OEV_APP_UI
             this.tpConnections.Text = "Verbindungen";
             this.tpConnections.UseVisualStyleBackColor = true;
             // 
+            // dtpTimePicker
+            // 
+            this.dtpTimePicker.CustomFormat = "hh:mm";
+            this.dtpTimePicker.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpTimePicker.Location = new System.Drawing.Point(133, 91);
+            this.dtpTimePicker.Name = "dtpTimePicker";
+            this.dtpTimePicker.ShowUpDown = true;
+            this.dtpTimePicker.Size = new System.Drawing.Size(98, 22);
+            this.dtpTimePicker.TabIndex = 15;
+            // 
             // dtpDepOrArr
             // 
             this.dtpDepOrArr.Cursor = System.Windows.Forms.Cursors.Default;
-            this.dtpDepOrArr.CustomFormat = "MM/dd/yyyy";
-            this.dtpDepOrArr.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dtpDepOrArr.Location = new System.Drawing.Point(9, 91);
+            this.dtpDepOrArr.CustomFormat = "yyyy-MM-dd";
+            this.dtpDepOrArr.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDepOrArr.Location = new System.Drawing.Point(6, 91);
             this.dtpDepOrArr.Name = "dtpDepOrArr";
-            this.dtpDepOrArr.Size = new System.Drawing.Size(96, 22);
+            this.dtpDepOrArr.Size = new System.Drawing.Size(121, 22);
             this.dtpDepOrArr.TabIndex = 9;
             // 
             // lstConnections
@@ -221,7 +217,7 @@ namespace OEV_APP_UI
             this.AcceptButton = this.btnSearch;
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(918, 633);
+            this.ClientSize = new System.Drawing.Size(915, 633);
             this.Controls.Add(this.tcControl);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -253,6 +249,7 @@ namespace OEV_APP_UI
         private Label lblStation;
         private ListView lstTimeTable;
         private DateTimePicker dtpDepOrArr;
+        private DateTimePicker dtpTimePicker;
     }
 }
 

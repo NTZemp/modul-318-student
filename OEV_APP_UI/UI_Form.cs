@@ -15,6 +15,7 @@ namespace OEV_APP_UI
     {
 
         APIInterface APIInterface = new APIInterface();
+        AutoCompleteStringCollection SuggestionSource = new AutoCompleteStringCollection();
 
         public UI_Form()
         {
@@ -26,6 +27,8 @@ namespace OEV_APP_UI
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            dtpDepOrArr.Text = DateTime.Now.ToLongDateString();
+            dtpTimePicker.Text = DateTime.Now.ToShortTimeString();
         }
 
 
@@ -42,7 +45,9 @@ namespace OEV_APP_UI
                 if (currtextBox.Text.Length >= 3)
                 {
                     GC.Collect();
-                    currtextBox.AutoCompleteCustomSource = APIInterface.GetSuggestions(currtextBox.Text);
+                    SuggestionSource = APIInterface.GetSuggestions(currtextBox.Text);
+                    currtextBox.AutoCompleteCustomSource = SuggestionSource;
+                    currtextBox.AutoCompleteMode = AutoCompleteMode.Suggest;
                 }
             }catch(Exception ex)
             {
@@ -58,7 +63,11 @@ namespace OEV_APP_UI
         /// <param name="e"></param>
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            DateTime datetime =Convert.ToDateTime(dtpDepOrArr.Text);
+            lstConnections.Items.Clear();
+            DateTime time = Convert.ToDateTime(dtpTimePicker.Text);
+            DateTime date =Convert.ToDateTime(dtpDepOrArr.Text);
+            DateTime dateTime = date.Date.Add(time.TimeOfDay);
+            
             if (txtFrom.Text == "" || txtTo.Text == "")
             {
                 MessageBox.Show("Bitte alle Von und Bis Station angeben.", "Eingabefehler");
@@ -68,7 +77,7 @@ namespace OEV_APP_UI
                 ListViewItem[] items;
                 try
                 {
-                    items = APIInterface.GetConnections(txtFrom.Text, txtTo.Text, dtpDepOrArr, dtpTimePicker);
+                    items = APIInterface.GetConnections(txtFrom.Text, txtTo.Text, dateTime);
                 }
                 catch(Exception ex)
                 {
@@ -86,6 +95,35 @@ namespace OEV_APP_UI
 
         }
 
+        private void btnSearchStation_Click(object sender, EventArgs e)
+        {
+            if (txtStation.Text == "")
+            {
+                MessageBox.Show("Bitte geben sie eine Station ein");
+            }
+            else
+            {
+                ListViewItem[] items;
+                try
+                {
+                    items = APIInterface.GetStationBoard(txtStation.Text);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.ToString());
+                    return;
+                }
+                lstTimeTable.Items.AddRange(items);
+            }
+
+        }
+
+
+        /// <summary>
+        /// Changes Accept button when the TabPage Changes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChangeAccpetBtn(object sender, EventArgs e)
         {
             if(tcControl.SelectedIndex == 0)
@@ -101,33 +139,9 @@ namespace OEV_APP_UI
 
 
 
-
-
-
-        private void btnSearchStation_Click(object sender, EventArgs e)
-        {
-            if(txtStation.Text == "")
-            {
-                MessageBox.Show("Bitte geben sie eine Station ein");
-            }
-            else
-            {
-                ListViewItem[] items;
-                try
-                {
-                    items = APIInterface.GetStationBoard(txtStation.Text);
-                }
-                catch(Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                    return;
-                }
-                lstTimeTable.Items.AddRange(items);
-            }
-            
-        }
-
-
+        /// <summary>
+        /// init Columns of ListViews
+        /// </summary>
         private void InitializeColumns()
         {
             // 
