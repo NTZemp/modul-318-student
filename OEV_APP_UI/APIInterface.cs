@@ -16,7 +16,6 @@ namespace OEV_APP_UI
 
         /// <summary>
         /// This Method provides Station suggestions while Typing
-        /// 
         /// </summary>
         /// <param name="query"></param>
         /// <returns >AutoCompleteStringCollection</returns>
@@ -24,31 +23,13 @@ namespace OEV_APP_UI
         {
             
             AutoCompleteStringCollection resColl = new AutoCompleteStringCollection();
-            
-            //If the Query used before is null or the new query doesn't Containt the old, make new API request.
-            //It is used in that the API isn't called to many times.
-            
-           if (Query == null||!query.Contains(Query))
+            stations = transportAPI.GetStations(query);
+            Query = query;
+            foreach (Station s in stations.StationList)
             {
-                stations = transportAPI.GetStations(query);
-                Query = query;
-                foreach (Station s in stations.StationList)
-                {
-                    resColl.Add(s.Name);
-                }
+                resColl.Add(s.Name);
             }
-            else
-            {
-                //If there was already a Query and the the new query conatins the Query requested before, 
-                //the suggestions are taken from the local memory.
-                foreach (Station s in stations.StationList)
-                {
-                    if(s.Name.ToUpper().Contains(query.ToUpper()))
-                    {
-                        resColl.Add(s.Name);
-                    }
-                }
-            }
+
 
 
             return resColl;
@@ -57,6 +38,10 @@ namespace OEV_APP_UI
         public string GetStationLocation(string Station)
         {
             Stations stations = transportAPI.GetStations(Station);
+            if(stations.StationList[0].Coordinate.XCoordinate == null)
+            {
+                throw new NoLocationDataException($"Für die Station {Station} sind leider keine Standortdaten verfügbar");
+            }
             string xy = stations.StationList[0].Coordinate.XCoordinate.ToString().Replace(',', '.')+"," + stations.StationList[0].Coordinate.YCoordinate.ToString().Replace(',', '.');
             return xy;
         }
@@ -74,7 +59,7 @@ namespace OEV_APP_UI
             StationBoardRoot stationBoard = transportAPI.GetStationBoard(Station, id);
             foreach (StationBoard e in stationBoard.Entries)
             {
-                string[] items = { e.To, e.Stop.Departure.ToString("hh:mm"), e.Stop.Plattform };
+                string[] items = { e.To, e.Stop.Departure.ToString("hh:mm"), e.Stop.Plattform == null ? "K/A" : e.Stop.Plattform };
                 results.Add(new ListViewItem(items));
             }
             return results.ToArray();
@@ -87,13 +72,18 @@ namespace OEV_APP_UI
         /// <param name="To"></param>
         /// <param name="DateTimeForConnections"></param>
         /// <returns></returns>
-        public ListViewItem[] GetConnections(string From, string To, DateTime DateTimeForConnections)
+        public ListViewItem[] GetConnections(string From, string To, DateTime DateTimeForConnections, bool AbOrAn)
         {
+            string AnOrAb ="0" ;
+            if (AbOrAn)
+            {
+                AnOrAb = "1";
+            }
             List<ListViewItem> results = new List<ListViewItem>();
-            Connections currConns = transportAPI.GetConnections(From, To, DateTimeForConnections);
+            Connections currConns = transportAPI.GetConnections(From, To, DateTimeForConnections, AnOrAb);
             foreach(Connection c in currConns.ConnectionList)
             {
-                string[] items = { c.From.DateTimeDeparture.ToString("hh:mm"), c.To.DateTimeArrival.ToString("hh:mm"), c.DateTimeDuration.ToString("hh:mm"), c.From.Platform };
+                string[] items = { c.From.DateTimeDeparture.ToString("HH:mm"), c.To.DateTimeArrival.ToString("HH:mm") , c.DateTimeDuration.ToString("HH:mm") , c.From.Platform };
                 results.Add(new ListViewItem(items));
             }
 
