@@ -22,10 +22,13 @@ namespace OEV_APP_UI
         /// <returns >AutoCompleteStringCollection</returns>
         public AutoCompleteStringCollection GetSuggestions(string query)
         {
+            
             AutoCompleteStringCollection resColl = new AutoCompleteStringCollection();
+            
             //If the Query used before is null or the new query doesn't Containt the old, make new API request.
             //It is used in that the API isn't called to many times.
-            if (Query == null||!query.Contains(Query))
+            
+           if (Query == null||!query.Contains(Query))
             {
                 stations = transportAPI.GetStations(query);
                 Query = query;
@@ -49,6 +52,13 @@ namespace OEV_APP_UI
 
 
             return resColl;
+        }
+
+        public string GetStationLocation(string Station)
+        {
+            Stations stations = transportAPI.GetStations(Station);
+            string xy = stations.StationList[0].Coordinate.XCoordinate.ToString().Replace(',', '.')+"," + stations.StationList[0].Coordinate.YCoordinate.ToString().Replace(',', '.');
+            return xy;
         }
 
 
