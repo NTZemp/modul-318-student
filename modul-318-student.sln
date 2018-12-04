@@ -7,12 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwissTransport", "src\Swiss
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SwissTransportTest", "tests\SwissTransportTest\SwissTransportTest.csproj", "{959C6E54-5B1C-40F5-938A-C57B17451421}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "doc", "doc", "{645C4ED5-8F4E-4331-9913-497415367054}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\..\OneDrive - swenex\Dokumente\School\ÜK\M318\ÖV App Dokumentation.docx = ..\..\..\OneDrive - swenex\Dokumente\School\ÜK\M318\ÖV App Dokumentation.docx
-	EndProjectSection
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OEV_APP_UI", "OEV_APP_UI\OEV_APP_UI.csproj", "{D05B97B9-3E26-4167-A128-3D44598E70F7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{05C15DAF-AC37-482A-BC9E-2CE32B35C525}"
+	ProjectSection(SolutionItems) = preProject
+		doku\ÖV App Dokumentation.docx = doku\ÖV App Dokumentation.docx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
